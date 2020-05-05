@@ -11,7 +11,7 @@ import Button from '../../components/Button';
 import { Container, Content, Background } from './styles';
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import AuthContext from '../../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
