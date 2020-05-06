@@ -34,9 +34,12 @@ const SignIn: React.FC = () => {
         await schema.validate(data, { abortEarly: false });
         signIn({ email: data.email, password: data.password });
       } catch (error) {
-        const errors = getValidationErrors(error);
-        console.error(error);
-        formRef.current?.setErrors(errors);
+        if (error instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(error);
+          console.error(error);
+          formRef.current?.setErrors(errors);
+        }
+        //toast
       }
     },
     [signIn],
