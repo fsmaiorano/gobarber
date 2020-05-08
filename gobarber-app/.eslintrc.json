@@ -23,6 +23,7 @@
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
+    "react/prop-types": "off",
     "no-nested-ternary": "off",
     "no-param-reassign": "off",
     "react/jsx-props-no-spreading": "off",
