@@ -6,6 +6,7 @@ import { View, ScrollView, Image, KeyboardAvoidingView, Platform, TextInput, Ale
 import Icon from 'react-native-vector-icons/Feather';
 import * as Yup from 'yup';
 import getValidationErrors from '../../utils/getValidationErrors';
+import { useAuth } from '../../hooks/auth';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -30,6 +31,10 @@ const SignIn: React.FC = () => {
   const passwordInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
 
+  const { signIn, user } = useAuth();
+
+  console.log(user);
+
   const handleSignIn = useCallback(async (data: SignInFormData) => {
     try {
       const schema = Yup.object().shape({
@@ -37,7 +42,7 @@ const SignIn: React.FC = () => {
         password: Yup.string().required('Senha obrigatória').min(6, 'Deve conter ao menos 6 caracteres'),
       });
       await schema.validate(data, { abortEarly: false });
-      // await signIn({ email: data.email, password: data.password });
+      await signIn({ email: data.email, password: data.password });
       // history.push('/dashboard');
     } catch (error) {
       if (error instanceof Yup.ValidationError) {

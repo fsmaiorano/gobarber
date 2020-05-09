@@ -27,30 +27,33 @@ const SignUp: React.FC = () => {
   const passwordInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
 
-  const handleSignUp = useCallback(async (data: SignUpFormData) => {
-    try {
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Nome obrigatório'),
-        email: Yup.string().required('E-mail obrigatório').email('Digite um e-mail válido'),
-        password: Yup.string().required('Senha obrigatória').min(6, 'Deve conter ao menos 6 caracteres'),
-      });
-      await schema.validate(data, { abortEarly: false });
-      await api.post('/users', data);
+  const handleSignUp = useCallback(
+    async (data: SignUpFormData) => {
+      try {
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatório'),
+          email: Yup.string().required('E-mail obrigatório').email('Digite um e-mail válido'),
+          password: Yup.string().required('Senha obrigatória').min(6, 'Deve conter ao menos 6 caracteres'),
+        });
+        await schema.validate(data, { abortEarly: false });
+        await api.post('/users', data);
 
-      Alert.alert('Cadastro realizado com sucesso!', 'Você já pode fazer login na aplicação');
+        Alert.alert('Cadastro realizado com sucesso!', 'Você já pode fazer login na aplicação');
 
-      navigation.goBack();
-    } catch (error) {
-      if (error instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(error);
-        console.info(error);
-        formRef.current?.setErrors(errors);
-        return;
+        navigation.goBack();
+      } catch (error) {
+        if (error instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(error);
+          console.info(error);
+          formRef.current?.setErrors(errors);
+          return;
+        }
+
+        Alert.alert('Erro no cadastro', 'Ocorreu um erro ao fazer cadastro, tente novamente');
       }
-
-      Alert.alert('Erro no cadastro', 'Ocorreu um erro ao fazer cadastro, tente novamente');
-    }
-  }, []);
+    },
+    [navigation],
+  );
 
   return (
     <>
