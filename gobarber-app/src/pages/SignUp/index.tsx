@@ -1,4 +1,6 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useCallback, useRef } from 'react';
+import { Form } from '@unform/mobile';
+import { FormHandles } from '@unform/core';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, ScrollView, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
@@ -10,7 +12,12 @@ import logoImg from '../../assets/logo.png';
 import { Container, Title, BackToSignButton, BackToSignButtonText, ForgotPassword, ForgotPasswordText } from './styles';
 
 const SignUp: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
   const navigation = useNavigation();
+
+  const handleSignUp = useCallback((data: object) => {
+    console.log(data);
+  }, []);
   return (
     <>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined} enabled>
@@ -20,16 +27,18 @@ const SignUp: React.FC = () => {
             <View>
               <Title>Crie a sua conta</Title>
             </View>
-            <Input name="name" icon="user" placeholder="Nome" />
-            <Input name="email" icon="mail" placeholder="E-mail" />
-            <Input name="password" icon="lock" placeholder="Senha" />
-            <Button
-              onPress={() => {
-                console.log('a');
-              }}
-            >
-              Entrar
-            </Button>
+            <Form ref={formRef} onSubmit={handleSignUp}>
+              <Input name="name" icon="user" placeholder="Nome" />
+              <Input name="email" icon="mail" placeholder="E-mail" />
+              <Input name="password" icon="lock" placeholder="Senha" />
+              <Button
+                onPress={() => {
+                  formRef.current?.submitForm();
+                }}
+              >
+                Entrar
+              </Button>
+            </Form>
           </Container>
         </ScrollView>
       </KeyboardAvoidingView>

@@ -1,5 +1,6 @@
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment, useCallback, useRef } from 'react';
 import { Form } from '@unform/mobile';
+import { FormHandles } from '@unform/core';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, ScrollView, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
@@ -18,7 +19,9 @@ import {
 } from './styles';
 
 const SignIn: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
   const navigation = useNavigation();
+
   const handleSignIn = useCallback((data: object) => {
     console.log(data);
   }, []);
@@ -32,12 +35,12 @@ const SignIn: React.FC = () => {
             <View>
               <Title>Faça seu logon</Title>
             </View>
-            <Form onSubmit={handleSignIn}>
+            <Form ref={formRef} onSubmit={handleSignIn}>
               <Input name="email" icon="mail" placeholder="E-mail" />
               <Input name="password" icon="lock" placeholder="Senha" />
               <Button
                 onPress={() => {
-                  console.log('a');
+                  formRef.current?.submitForm();
                 }}
               >
                 Entrar
