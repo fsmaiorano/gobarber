@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { View, ScrollView, Image, KeyboardAvoidingView, Platform, TextInput, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import * as Yup from 'yup';
+import api from '../../services/api';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 
@@ -34,13 +35,11 @@ const SignUp: React.FC = () => {
         password: Yup.string().required('Senha obrigatória').min(6, 'Deve conter ao menos 6 caracteres'),
       });
       await schema.validate(data, { abortEarly: false });
-      // await api.post('/users', data);
-      // addToast({
-      //   type: 'success',
-      //   title: 'Cadastro realizado',
-      //   description: 'Você já pode fazer seu logon no GoBarber',
-      // });
-      // history.push('/');
+      await api.post('/users', data);
+
+      Alert.alert('Cadastro realizado com sucesso!', 'Você já pode fazer login na aplicação');
+
+      navigation.goBack();
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
