@@ -21,6 +21,7 @@
   },
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
+    "no-useless-constructor": "off",
     "class-methods-use-this": "off",
     "consistent-return": "off",
     "@typescript-eslint/camelcase": "off",
@@ -32,6 +33,7 @@
     "arrow-spacing":"off",
     "computed-property-spacing":"off",
     "prettier/prettier": "error",
+    "@typescript-eslint/interface-name-prefix": ["error", { "prefixWithI": "always" }],
     "import/extensions": [
       "error",
       "ignorePackages",
