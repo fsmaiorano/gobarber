@@ -2,11 +2,16 @@ import 'reflect-metadata';
 import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService';
 import FakeAppointmentRepository from '../repositories/fakes/FakeAppointmentsRepository';
 
-describe('CreateAppointment', () => {
-  it('should be able to create a new appointment', async () => {
-    const fakeAppointmentRepository = new FakeAppointmentRepository();
-    const createAppointment = new CreateAppointmentService(fakeAppointmentRepository);
+let fakeAppointmentsRepository: FakeAppointmentRepository;
+let createAppointment: CreateAppointmentService;
 
+describe('CreateAppointment', () => {
+  beforeEach(() => {
+    fakeAppointmentsRepository = new FakeAppointmentRepository();
+    createAppointment = new CreateAppointmentService(fakeAppointmentsRepository);
+  });
+
+  it('should be able to create a new appointment', async () => {
     const appointment = await createAppointment.execute({
       date: new Date(),
       provider_id: '12312321321',
