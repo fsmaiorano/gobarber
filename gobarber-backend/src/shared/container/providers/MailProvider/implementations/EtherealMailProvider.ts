@@ -6,7 +6,7 @@ import IMailTemplateProvider from '../../MailTemplateProvider/models/IMailTempla
 
 @injectable()
 export default class EtherealMailProvider implements IMailProvider {
-  private client: Transporter;
+  public client: Transporter;
 
   constructor(@inject('MailTemplateProvider') private mailTemplateProvider: IMailTemplateProvider) {
     nodemailer.createTestAccount().then(account => {
