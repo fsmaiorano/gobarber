@@ -51,7 +51,7 @@ describe('UpdateProfileService', () => {
         name: 'John Doez',
         email: 'JDA@fake.com',
         password: '1234567',
-        oldPassword: '123456',
+        old_password: '123456',
       });
 
       expect(updatedUser.password).toBe('1234567');
@@ -79,7 +79,7 @@ describe('UpdateProfileService', () => {
           name: 'John Doez',
           email: 'JDA@fake.com',
           password: '1234567',
-          oldPassword: 'asdsadas',
+          old_password: 'asdsadas',
         }),
       ).rejects.toBeInstanceOf(AppError);
     });

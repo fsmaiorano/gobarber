@@ -9,7 +9,7 @@ interface IRequest {
   name: string;
   email: string;
   password?: string;
-  oldPassword?: string;
+  old_password?: string;
 }
 
 @injectable()
@@ -20,7 +20,7 @@ class UpdateProfileService {
     @inject('HashProvider') private hashProvider: IHashProvider,
   ) {}
 
-  public async execute({ user_id, name, email, password, oldPassword }: IRequest): Promise<User> {
+  public async execute({ user_id, name, email, password, old_password }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
@@ -36,12 +36,12 @@ class UpdateProfileService {
     user.name = name;
     user.email = email;
 
-    if (password && !oldPassword) {
+    if (password && !old_password) {
       throw new AppError('You need inform the old password to set a new password');
     }
 
-    if (password && oldPassword) {
-      const checkOldPassword = await this.hashProvider.compareHash(oldPassword, user.password);
+    if (password && old_password) {
+      const checkOldPassword = await this.hashProvider.compareHash(old_password, user.password);
 
       if (!checkOldPassword) {
         user.password = await this.hashProvider.generateHash(password);
