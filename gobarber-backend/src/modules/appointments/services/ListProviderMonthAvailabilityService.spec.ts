@@ -1,11 +1,11 @@
 import 'reflect-metadata';
-import ListProviderMonthAvailabilityService from './ListMonthAvailabilityService';
+import ListProviderMonthAvailabilityService from './ListProviderMonthAvailabilityService';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let listProviderMonthAvailabilityService: ListProviderMonthAvailabilityService;
 
-describe('ListMonthAvailabilityService', () => {
+describe('ListProviderMonthAvailabilityService', () => {
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository();
     listProviderMonthAvailabilityService = new ListProviderMonthAvailabilityService(fakeAppointmentsRepository);
