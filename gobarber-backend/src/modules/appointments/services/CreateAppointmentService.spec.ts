@@ -15,6 +15,7 @@ describe('CreateAppointment', () => {
     const appointment = await createAppointment.execute({
       date: new Date(),
       provider_id: '12312321321',
+      user_id: '1231321',
     });
 
     expect(appointment).toHaveProperty('id');

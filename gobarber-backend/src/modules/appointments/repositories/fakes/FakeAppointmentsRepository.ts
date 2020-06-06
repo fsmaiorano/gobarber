@@ -10,9 +10,9 @@ import Appointment from '../../infra/typeorm/entities/Appointment';
 class FakeAppointmentsRepository implements IAppointmentRepository {
   private appointments: Appointment[] = [];
 
-  public async create({ provider_id, date }: ICreateAppointmentDTO): Promise<Appointment> {
+  public async create({ user_id, provider_id, date }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointment = new Appointment();
-    Object.assign(appointment, { id: uuid(), date, provider_id });
+    Object.assign(appointment, { id: uuid(), date, provider_id, user_id });
     this.appointments.push(appointment);
     return appointment;
   }
