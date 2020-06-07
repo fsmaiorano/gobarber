@@ -1,6 +1,6 @@
 export default {
   jwt: {
-    secret: 'gobarber',
-    expiresIn: '1d',
+    secret: process.env.APP_SECRET,
+    expiresIn: '10d',
   },
 };
