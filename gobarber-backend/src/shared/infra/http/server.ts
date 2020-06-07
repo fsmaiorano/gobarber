@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import express, { json, Request, Response } from 'express';
 import cors from 'cors';
+import { errors } from 'celebrate';
 
 import 'express-async-errors';
 import uploadConfig from '@config/upload';
@@ -16,6 +17,8 @@ app.use(cors());
 app.use(json());
 app.use('/files', express.static(uploadConfig.uploadsFolder));
 app.use(routes);
+
+app.use(errors());
 
 // Global Handler Exceptions
 app.use((error: Error, request: Request, response: Response) => {
