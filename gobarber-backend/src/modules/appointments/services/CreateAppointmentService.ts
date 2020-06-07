@@ -3,6 +3,7 @@ import AppError from '@shared/errors/AppError';
 import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import { inject, injectable } from 'tsyringe';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import Appointment from '../infra/typeorm/entities/Appointment';
 
 interface IRequestDTO {
@@ -18,6 +19,8 @@ class CreateAppointmentService {
 
     @inject('NotificationsRepository')
     private notificationsRepository: INotificationsRepository,
+
+    @inject('CacheProvider') private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({ user_id, provider_id, date }: IRequestDTO): Promise<Appointment> {
@@ -53,6 +56,8 @@ class CreateAppointmentService {
       recipient_id: provider_id,
       content: `New Schedule to ${dateFormatted}`,
     });
+
+    await this.cacheProvider.invalidade(`provider-appointments:${provider_id}:${format(appointmentDate, 'yyyy-M-dd')}`);
 
     return appointment;
   }
