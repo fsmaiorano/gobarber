@@ -20,6 +20,7 @@ import {
 } from './styles';
 import { ptBR } from 'date-fns/esm/locale';
 import { parseISO } from 'date-fns/esm';
+import { Link } from 'react-router-dom';
 
 interface MonthAvailabilityItem {
   day: number;
@@ -127,7 +128,9 @@ const Dashboard: React.FC = () => {
             <img src={user.avatar_url} alt="Profile" />
             <div>
               <span>Bem-vindo,</span>
-              <strong>{user.name}</strong>
+              <Link to="/profile">
+                <strong>{user.name}</strong>
+              </Link>
             </div>
           </Profile>
           <button type="button" onClick={signOut}>
