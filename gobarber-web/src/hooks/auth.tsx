@@ -6,15 +6,21 @@ interface SignInCredentials {
   password: string;
 }
 
-interface AuthState {
-  token: string;
-  user: object;
+interface IUser {
+  id: string;
+  name: string;
+  avatar_url: string;
 }
 
 interface IAuthContext {
-  user: object;
+  user: IUser;
   signIn(signInCredentials: SignInCredentials): void;
   signOut(): void;
+}
+
+interface AuthState {
+  token: string;
+  user: IUser;
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
