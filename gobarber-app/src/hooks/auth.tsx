@@ -8,13 +8,20 @@ interface SignInCredentials {
   password: string;
 }
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar_url: string;
+}
+
 interface AuthState {
   token: string;
-  user: object;
+  user: User;
 }
 
 interface AuthContext {
-  user: object;
+  user: User;
   loading: boolean;
   signIn(signInCredentials: SignInCredentials): void;
   signOut(): void;
@@ -44,7 +51,6 @@ const AuthProvider: React.FC = ({ children }) => {
   const signIn = useCallback(async ({ email, password }) => {
     const response = await api.post('sessions', { email, password });
     const { token, user } = response.data;
-
     await AsyncStorage.multiSet([
       ['@GoBarber:token', token],
       ['@GoBarber:user', JSON.stringify(user)],

@@ -57,7 +57,7 @@ class CreateAppointmentService {
       content: `New Schedule to ${dateFormatted}`,
     });
 
-    await this.cacheProvider.invalidade(`provider-appointments:${provider_id}:${format(appointmentDate, 'yyyy-M-dd')}`);
+    // await this.cacheProvider.invalidade(`provider-appointments:${provider_id}:${format(appointmentDate, 'yyyy-M-dd')}`);
 
     return appointment;
   }
