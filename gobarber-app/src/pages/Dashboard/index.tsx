@@ -21,7 +21,7 @@ import {
   ProviderListTitle,
 } from './styles';
 
-interface Provider {
+export interface Provider {
   id: string;
   name: string;
   avatar_url: string;
