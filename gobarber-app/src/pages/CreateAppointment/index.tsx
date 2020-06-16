@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { View, Button } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { useAuth } from '../../hooks/auth';
 import {
@@ -80,6 +81,7 @@ const CreateAppointment: React.FC = () => {
           )}
         />
       </ProvidersListContainer>
+      {/* <DateTimePicker /> */}
     </Container>
   );
 };
