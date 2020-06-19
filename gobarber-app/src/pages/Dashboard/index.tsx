@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Icon from 'react-native-vector-icons/Feather';
-import { View, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import api from '../../services/api';
+import Icon from 'react-native-vector-icons/Feather';
+
+import { useTheme } from 'styled-components';
 import { useAuth } from '../../hooks/auth';
+import api from '../../services/api';
+
 import {
   Container,
   Header,
@@ -12,13 +14,13 @@ import {
   ProfileButton,
   UserAvatar,
   ProvidersList,
+  ProvidersListTitle,
   ProviderContainer,
   ProviderAvatar,
   ProviderInfo,
   ProviderName,
   ProviderMeta,
   ProviderMetaText,
-  ProviderListTitle,
 } from './styles';
 
 export interface Provider {
@@ -29,18 +31,15 @@ export interface Provider {
 
 const Dashboard: React.FC = () => {
   const [providers, setProviders] = useState<Provider[]>([]);
-  const { signOut, user } = useAuth();
+
+  const { user } = useAuth();
   const { navigate } = useNavigation();
 
   useEffect(() => {
-    api.get(`providers`).then(response => {
+    api.get('/providers').then(response => {
       setProviders(response.data);
     });
-  }, [navigate]);
-
-  // useEffect(() => {
-  //   signOut();
-  // }, [signOut]);
+  }, []);
 
   const navigateToProfile = useCallback(() => {
     navigate('Profile');
@@ -57,10 +56,11 @@ const Dashboard: React.FC = () => {
     <Container>
       <Header>
         <HeaderTitle>
-          Bem-vindo,
+          Bem vindo,
           {'\n'}
           <UserName>{user.name}</UserName>
         </HeaderTitle>
+
         <ProfileButton onPress={navigateToProfile}>
           <UserAvatar source={{ uri: user.avatar_url }} />
         </ProfileButton>
@@ -68,24 +68,27 @@ const Dashboard: React.FC = () => {
 
       <ProvidersList
         data={providers}
-        ListHeaderComponent={<ProviderListTitle>Cabeleireiros</ProviderListTitle>}
         keyExtractor={provider => provider.id}
+        ListHeaderComponent={<ProvidersListTitle>Cabeleireiros</ProvidersListTitle>}
         renderItem={({ item: provider }) => (
-          <ProviderContainer
-            onPress={() => {
-              navigateToCreateAppointment(provider.id);
-            }}
-          >
-            <ProviderAvatar source={{ uri: provider.avatar_url }} />
+          <ProviderContainer onPress={() => navigateToCreateAppointment(provider.id)}>
+            <ProviderAvatar
+              source={{
+                uri: provider.avatar_url || 'https://api.adorable.io/avatars/72/abott@adorable.png',
+              }}
+            />
+
             <ProviderInfo>
               <ProviderName>{provider.name}</ProviderName>
+
               <ProviderMeta>
-                <Icon name="calendar" size={14} color="#ff9000" />
+                <Icon name="calendar" size={14} />
                 <ProviderMetaText>Segunda à sexta</ProviderMetaText>
               </ProviderMeta>
+
               <ProviderMeta>
-                <Icon name="clock" size={14} color="#ff9000" />
-                <ProviderMetaText>08hrs às 18hrs</ProviderMetaText>
+                <Icon name="clock" size={14} />
+                <ProviderMetaText>8h às 18h</ProviderMetaText>
               </ProviderMeta>
             </ProviderInfo>
           </ProviderContainer>

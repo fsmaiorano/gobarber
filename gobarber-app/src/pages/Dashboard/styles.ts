@@ -17,6 +17,12 @@ export const Header = styled.View`
   align-items: center;
 `;
 
+export const ProvidersListTitle = styled.Text`
+  font-size: 24px;
+  margin-bottom: 24px;
+  color: #fff;
+`;
+
 export const HeaderTitle = styled.Text`
   color: #f4ede8;
   font-size: 20px;
