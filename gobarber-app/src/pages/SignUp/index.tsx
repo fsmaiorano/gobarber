@@ -1,122 +1,44 @@
-import React, { useCallback, useRef } from 'react';
-import { Form } from '@unform/mobile';
-import { FormHandles } from '@unform/core';
-import { useNavigation } from '@react-navigation/native';
-import { View, ScrollView, Image, KeyboardAvoidingView, Platform, TextInput, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-import * as Yup from 'yup';
-import api from '../../services/api';
+import styled from 'styled-components/native';
+import { Platform } from 'react-native';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 
-import getValidationErrors from '../../utils/getValidationErrors';
+import FeatherIcon from 'react-native-vector-icons/Feather';
 
-import Input from '../../components/Input';
-import Button from '../../components/Button';
+export const Container = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30px ${Platform.OS === 'android' ? 150 : 40}px;
+`;
 
-import logoImg from '../../assets/logo.png';
-import { Container, Title, BackToSignButton, BackToSignButtonText, ForgotPassword, ForgotPasswordText } from './styles';
+export const Title = styled.Text`
+  font-size: 24px;
+  color: ${({ theme }) => theme.colors.white};
+  font-family: ${({ theme }) => theme.fonts.medium};
+  margin: 64px 0 24px;
+`;
 
-interface SignUpFormData {
-  name: string;
-  email: string;
-  password: string;
-}
+export const BackToSign = styled.TouchableOpacity`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: ${({ theme }) => theme.colors.background};
+  border-top-width: 1px;
+  border-color: ${({ theme }) => theme.colors.inputs};
+  padding: 16px 0 ${8 + getBottomSpace()}px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+`;
 
-const SignUp: React.FC = () => {
-  const formRef = useRef<FormHandles>(null);
-  const emailInputRef = useRef<TextInput>(null);
-  const passwordInputRef = useRef<TextInput>(null);
-  const navigation = useNavigation();
+export const BackToSignText = styled.Text`
+  color: ${({ theme }) => theme.colors.white};
+  font-size: 18px;
+  font-family: ${({ theme }) => theme.fonts.regular};
+  margin-left: 16px;
+`;
 
-  const handleSignUp = useCallback(
-    async (data: SignUpFormData) => {
-      try {
-        const schema = Yup.object().shape({
-          name: Yup.string().required('Nome obrigatório'),
-          email: Yup.string().required('E-mail obrigatório').email('Digite um e-mail válido'),
-          password: Yup.string().required('Senha obrigatória').min(6, 'Deve conter ao menos 6 caracteres'),
-        });
-        await schema.validate(data, { abortEarly: false });
-        await api.post('/users', data);
-
-        Alert.alert('Cadastro realizado com sucesso!', 'Você já pode fazer login na aplicação');
-
-        navigation.goBack();
-      } catch (error) {
-        if (error instanceof Yup.ValidationError) {
-          const errors = getValidationErrors(error);
-          console.info(error);
-          formRef.current?.setErrors(errors);
-          return;
-        }
-
-        Alert.alert('Erro no cadastro', 'Ocorreu um erro ao fazer cadastro, tente novamente');
-      }
-    },
-    [navigation],
-  );
-
-  return (
-    <>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined} enabled>
-        <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps="handled">
-          <Container>
-            <Image source={logoImg} />
-            <View>
-              <Title>Crie a sua conta</Title>
-            </View>
-            <Form ref={formRef} onSubmit={handleSignUp}>
-              <Input
-                name="name"
-                autoCapitalize="words"
-                icon="user"
-                placeholder="Nome"
-                returnKeyType="next"
-                onSubmitEditing={() => emailInputRef.current?.focus()}
-              />
-              <Input
-                ref={emailInputRef}
-                name="email"
-                autoCapitalize="none"
-                keyboardType="email-address"
-                autoCorrect={false}
-                icon="mail"
-                placeholder="E-mail"
-                returnKeyType="next"
-                onSubmitEditing={() => passwordInputRef.current?.focus()}
-              />
-              <Input
-                ref={passwordInputRef}
-                name="password"
-                secureTextEntry
-                textContentType="newPassword"
-                returnKeyType="send"
-                icon="lock"
-                placeholder="Senha"
-                onSubmitEditing={() => {
-                  formRef.current?.submitForm();
-                }}
-              />
-              <Button
-                onPress={() => {
-                  formRef.current?.submitForm();
-                }}
-              >
-                Entrar
-              </Button>
-            </Form>
-          </Container>
-        </ScrollView>
-      </KeyboardAvoidingView>
-      <BackToSignButton
-        onPress={() => {
-          navigation.navigate('SignIn');
-        }}
-      >
-        <Icon name="arrow-left" size={20} color="#ff9000" />
-        <BackToSignButtonText>Voltar</BackToSignButtonText>
-      </BackToSignButton>
-    </>
-  );
-};
-
-export default SignUp;
+export const Icon = styled(FeatherIcon)`
+  color: ${({ theme }) => theme.colors.white};
+`;

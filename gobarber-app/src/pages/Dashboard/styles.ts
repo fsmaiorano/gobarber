@@ -1,7 +1,8 @@
 import styled from 'styled-components/native';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { FlatList } from 'react-native';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { RectButton } from 'react-native-gesture-handler';
+
 import { Provider } from './index';
 
 export const Container = styled.View`
@@ -11,28 +12,22 @@ export const Container = styled.View`
 export const Header = styled.View`
   padding: 24px;
   padding-top: ${getStatusBarHeight() + 24}px;
-  background: #28262e;
+  background: ${({ theme }) => theme.colors.blackMedium};
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 `;
 
-export const ProvidersListTitle = styled.Text`
-  font-size: 24px;
-  margin-bottom: 24px;
-  color: #fff;
-`;
-
 export const HeaderTitle = styled.Text`
-  color: #f4ede8;
+  color: ${({ theme }) => theme.colors.white};
   font-size: 20px;
-  font-family: 'RobotoSlab-Regular';
+  font-family: ${({ theme }) => theme.fonts.regular};
   line-height: 28px;
 `;
 
 export const UserName = styled.Text`
-  color: #ff9000;
-  font-family: 'RobotoSlab-Medium';
+  color: ${({ theme }) => theme.colors.orange};
+  font-family: ${({ theme }) => theme.fonts.medium};
 `;
 
 export const ProfileButton = styled.TouchableOpacity``;
@@ -47,8 +42,15 @@ export const ProvidersList = styled(FlatList as new () => FlatList<Provider>)`
   padding: 32px 24px 16px;
 `;
 
+export const ProvidersListTitle = styled.Text`
+  font-size: 24px;
+  margin-bottom: 24px;
+  color: ${({ theme }) => theme.colors.white};
+  font-family: ${({ theme }) => theme.fonts.medium};
+`;
+
 export const ProviderContainer = styled(RectButton)`
-  background: #3e3b47;
+  background: ${({ theme }) => theme.colors.shape};
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 16px;
@@ -64,13 +66,13 @@ export const ProviderAvatar = styled.Image`
 
 export const ProviderInfo = styled.View`
   flex: 1;
-  margin-left: 20px;
+  margin-left: 24px;
 `;
 
 export const ProviderName = styled.Text`
-  font-family: 'RobotoSlab-Medium';
+  font-family: ${({ theme }) => theme.fonts.medium};
+  color: ${({ theme }) => theme.colors.white};
   font-size: 18px;
-  color: #f4ede8;
 `;
 
 export const ProviderMeta = styled.View`
@@ -81,13 +83,6 @@ export const ProviderMeta = styled.View`
 
 export const ProviderMetaText = styled.Text`
   margin-left: 8px;
-  color: #999591;
-  font-family: 'RobotoSlab-Regular';
-`;
-
-export const ProviderListTitle = styled.Text`
-  font-size: 24px;
-  margin-bottom: 24px;
-  color: #f4ede8;
-  font-family: 'RobotoSlab-Medium';
+  color: ${({ theme }) => theme.colors.gray};
+  font-family: ${({ theme }) => theme.fonts.regular};
 `;

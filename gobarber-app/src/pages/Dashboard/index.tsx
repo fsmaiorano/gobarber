@@ -34,6 +34,7 @@ const Dashboard: React.FC = () => {
 
   const { user } = useAuth();
   const { navigate } = useNavigation();
+  const theme = useTheme();
 
   useEffect(() => {
     api.get('/providers').then(response => {
@@ -56,8 +57,7 @@ const Dashboard: React.FC = () => {
     <Container>
       <Header>
         <HeaderTitle>
-          Bem vindo,
-          {'\n'}
+          Bem vindo,{'\n'}
           <UserName>{user.name}</UserName>
         </HeaderTitle>
 
@@ -82,12 +82,12 @@ const Dashboard: React.FC = () => {
               <ProviderName>{provider.name}</ProviderName>
 
               <ProviderMeta>
-                <Icon name="calendar" size={14} />
+                <Icon name="calendar" size={14} color={theme.colors.orange} />
                 <ProviderMetaText>Segunda à sexta</ProviderMetaText>
               </ProviderMeta>
 
               <ProviderMeta>
-                <Icon name="clock" size={14} />
+                <Icon name="clock" size={14} color={theme.colors.orange} />
                 <ProviderMetaText>8h às 18h</ProviderMetaText>
               </ProviderMeta>
             </ProviderInfo>
