@@ -1,9 +1,12 @@
-import { inject, injectable } from 'tsyringe';
+import { injectable, inject } from 'tsyringe';
+import { isAfter, addHours } from 'date-fns';
+
 import AppError from '@shared/errors/AppError';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import { addHours, isAfter } from 'date-fns';
-import IUserTokensRepository from '../repositories/IUserTokensRepository';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
+import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
+
+// import User from '@modules/users/infra/typeorm/entities/User';
 
 interface IRequest {
   password: string;
@@ -13,29 +16,31 @@ interface IRequest {
 @injectable()
 class ResetPasswordService {
   constructor(
-    @inject('UsersRepository') private usersRepository: IUsersRepository,
-    // @inject('MailProvider') private mailProvider: IMailProvider,
-    @inject('UserTokensRepository') private userTokensRepository: IUserTokensRepository,
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
 
-    @inject('HashProvider') private hashProvider: IHashProvider,
+    @inject('UserTokensRepository')
+    private userTokensRepository: IUserTokensRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ) {}
 
-  public async execute({ password, token }: IRequest): Promise<void> {
+  async execute({ token, password }: IRequest): Promise<void> {
     const userToken = await this.userTokensRepository.findByToken(token);
 
     if (!userToken) {
       throw new AppError('User token does not exists');
     }
 
-    const user = await this.usersRepository.findById(userToken?.user_id);
+    const user = await this.usersRepository.findById(userToken.user_id);
 
     if (!user) {
-      throw new AppError('User token does not exists');
+      throw new AppError('User does not exists');
     }
 
-    const tokenCreatedAt = userToken.created_at;
-
-    const compareDate = addHours(tokenCreatedAt, 2);
+    const tokenCraetedAt = userToken.created_at;
+    const compareDate = addHours(tokenCraetedAt, 2);
 
     if (isAfter(Date.now(), compareDate)) {
       throw new AppError('Token expired');
